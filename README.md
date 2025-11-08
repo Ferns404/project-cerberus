@@ -25,7 +25,7 @@ Project Cerberus runs as a micro-ecosystem of four components communicating over
 
 ```text
 +-------------------+      +-----------------------+      +-------------------------+
-|  Attacker Script  |      |  Target Client (React)  |      |  SOC Dashboard (React)  |
+|  Attacker Script  |      |  Target Client (React)|      |  SOC Dashboard (React)  |
 |   (attack.py)     |      |   (Port: 3000)        |      |   (Port: 3002)          |
 +-------------------+      +-----------------------+      +-------------------------+
          |                          |                           |
@@ -36,10 +36,10 @@ Project Cerberus runs as a micro-ecosystem of four components communicating over
     |                    Server (Node.js/Express)               |
     |                       (Port: 3001)                        |
     |                                                           |
-    |  [Guard 1: WAF (IP Blocker)]                                | <==[Emits 'new_attack']
-    |  [Guard 2: Detection Middleware (Logs & Emits)]             |
+    |  [Guard 1: WAF (IP Blocker)]                              | <==[Emits 'new_attack']
+    |  [Guard 2: Detection Middleware (Logs & Emits)]           |
     |                                                           |
-    |  [Vulnerable Routes]  |  [Patched Routes]                  |
+    |  [Vulnerable Routes]  |  [Patched Routes]                 |
     +-----------------------------------------------------------+
          |
          | [SQL Read/Write]
