@@ -1,0 +1,116 @@
+npm start
+Login- normal_user   password123
+
+TEST
+xss-   <img src=x onerror=\"alert('XSS by Cerberus Script')\">
+idor-   http://localhost:3001/api/users/1
+sqli-   ' OR '1'='1' --     anything
+bac-   http://localhost:3001/api/admin/all_users
+data exposure- login->consol->network
+
+
+
+Phase 1: The "Target" Backend & Database
+Goal: Build the "vulnerable" e-commerce server and the database it runs on. This is our foundation.
+
+Key Tasks:
+Project Setup: Create a new Node.js project (npm init).
+Install Dependencies: We'll install express, pg (for PostgreSQL) or mysql2, and nodemon.
+Database Design: We'll create a simple SQL database with three tables:
+users (id, username, password)
+products (id, name, description)
+comments (id, product_id, username, comment_text)
+Server Setup: Create your server.js file, set up your Express app, and establish a successful connection to your new database.
+
+🏁 End of Phase 1: You will have a running Express server that can query your database (e.g., "SELECT * FROM users").
+
+Phase 2: Building the Vulnerable API
+Goal: Create the API endpoints that our "Target" front-end will use. We will intentionally write insecure code.
+
+Key Tasks:
+POST /api/login (SQL Injection): We'll write this endpoint to use vulnerable string concatenation to build its SQL query.
+GET /api/products/:id (XSS Prep): This endpoint will fetch a product and all its associated comments.
+POST /api/products/:id/comments (Stored XSS): This endpoint will take a user's comment and save it directly to the comments table without any sanitization.
+GET /api/admin/all_users (Broken Access Control): We'll create this "admin" endpoint but forget to add any middleware to check if the user is actually an admin.
+
+🏁 End of Phase 2: You will have a set of API endpoints that you can test with a tool like Postman and confirm they work (and are insecure).
+
+Phase 3: The "Target" Front-End (React App #1)
+Goal: Build the visual, interactive e-commerce site that users (and attackers) will see.
+
+Key Tasks:
+Setup: Use npx create-react-app target-client to scaffold the first React app.
+Components: We'll build a few simple components:
+LoginPage.js: A form that hits the POST /api/login endpoint.
+ProductPage.js: A page that fetches and displays product info and comments from GET /api/products/:id.
+CommentForm.js: A form that submits new comments to POST /api/products/:id/comments.
+Test: You'll log in with the SQLi payload (' OR '1'='1) and post a comment with a <script>alert('XSS')</script> tag.
+
+🏁 End of Phase 3: You will have a functional (and very breakable) web application.
+
+Phase 4: The Detection Engine (Middleware & Logging)
+Goal: Make our backend aware of attacks. We'll build the "brains" of our defense system.
+
+Key Tasks:
+Modify Database: We'll add one new table: attack_logs (id, timestamp, type, payload, ip_address).
+Create Detection Middleware: We'll write a new detectAttacks.js middleware file.
+Regex Logic: Inside the middleware, we'll use simple Regex to check req.body and req.query for suspicious patterns (e.g., ' OR ', <script>, ../).
+Log to DB: If a pattern is found, the middleware will write a detailed log to the attack_logs table and then pass the request along.
+
+🏁 End of Phase 4: You'll try the same attacks from Phase 3, and this time, you'll see new rows appearing in your attack_logs table.
+
+Phase 5: The Live SOC Dashboard (WebSockets & React App #2)
+Goal: Create the real-time "Security Operations Center" dashboard that displays attacks as they happen.
+
+Key Tasks:
+Install Socket.io: Add socket.io to your Node.js backend.
+Emit Events: We'll update our Phase 4 middleware. After it saves a log to the DB, it will also do io.emit('new_attack', attackLogData).
+Setup: Use npx create-react-app soc-dashboard to scaffold your second React app.
+Connect: In this new app's App.js, we'll use socket.io-client to connect to our server.
+Listen & Display: We'll listen for the new_attack event. When one is received, we'll use useState to add it to an array, which will instantly render it as a new item in a list on the page.
+
+🏁 End of Phase 5: You will have two browser windows open. In one, you'll perform an attack on the e-commerce site. In the other, you'll see the attack alert pop up instantly.
+
+Phase 6: The "Attacker" Script (Python)
+Goal: Automate the attack to create a powerful, hands-free demo.
+
+Key Tasks:
+Create attack.py: A simple Python file.
+Install requests: (pip install requests).
+Write Attack Functions: We'll write functions that send crafted HTTP requests to your server:
+run_sqli_attack()
+run_xss_attack()
+run_bac_attack()
+
+🏁 End of Phase 6: You can run one command (python attack.py) and watch your SOC Dashboard light up with all three attack types.
+
+
+Phase 7 (NEW): Expanding the Attack Surface
+IDOR: We'll build a GET /api/users/profile/:id route that lets any logged-in user see any other user's profile.
+Sensitive Data Exposure: We will formally identify and demonstrate this vulnerability that's already in our POST /api/login route.
+
+Phase 8 (NEW): Building the WAF (Auto-Ban)
+We'll build the middleware that tracks attack counts per IP and bans them after a threshold (e.g., 3 attacks).
+
+Phase 9 (NEW): Creating the "Patched" Endpoints
+We'll build the ...-secure versions for all 5 vulnerabilities (SQLi, XSS, BAC, IDOR, and Sensitive Data Exposure) to prove we know the fix for each one.
+
+Phase 10 (NEW): Upgrading the SOC Dashboard
+We'll add the filter buttons ("All", "SQLi", "XSS", "IDOR", etc.) and other "fancy" UI touches.
+
+Phase 11 (NEW): Upgrading the Target UI
+We'll make the e-commerce site look more like a "proper, fancy website."
+
+
+Phase 12: The Portfolio Polish (The README)
+Goal: Package the project so a hiring manager can understand it in 60 seconds.
+
+Key Tasks:
+Write README.md: This is the most important file.
+Include:
+A clear "What This Is" section.
+An architecture diagram (I can help you make a simple text-based one).
+A "How to Run" guide.
+The Demo: A short, high-quality GIF or silent video showing the final demo from Phase 6. This is non-negotiable for a project this visual.
+
+🏁 End of Phase 7: You have a link to a GitHub repository that is 100% ready to be put on your resume.

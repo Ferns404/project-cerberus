@@ -1,0 +1,110 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg-color: #0d0d0d;
+  --card-bg-transparent: rgba(26, 26, 26, 0.85); 
+  --card-bg-solid: #1a1a1a;
+  --border-color: #333;
+  --text-color: #e0e0e0;
+  --text-muted: #888;
+  --danger: #ff4d4d;
+  --warning: #ffa500;
+  --info: #00bfff;
+  --purple: #bb86fc; 
+  --ban-red: #ff0000; /* --- NEW: Bright red for bans --- */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  background: radial-gradient(ellipse at center, #1a1a1a 0%, #0d0d0d 70%, #0a0a0a 100%);
+  color: var(--text-color);
+  line-height: 1.6;
+  min-height: 100vh; 
+}
+
+.container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+
+h1 {
+  color: var(--danger);
+  font-weight: 500;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(255, 77, 77, 0.3);
+}
+
+h1 span { color: var(--text-muted); font-size: 1rem; margin-left: 1rem; }
+
+.filter-nav { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.filter-btn {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  background-color: var(--card-bg-solid);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.filter-btn:hover { color: var(--text-color); border-color: var(--text-color); }
+.filter-btn.active { color: var(--bg-color); font-weight: 500; }
+.filter-btn.active[data-type="ALL"] { background-color: var(--text-color); }
+.filter-btn.active[data-type="SQLi"] { background-color: var(--danger); }
+.filter-btn.active[data-type="XSS"] { background-color: var(--warning); }
+.filter-btn.active[data-type="BAC"] { background-color: var(--info); }
+.filter-btn.active[data-type="IDOR"] { background-color: var(--purple); }
+
+.log-list { list-style: none; }
+
+.log-item {
+  background-color: var(--card-bg-transparent); 
+  backdrop-filter: blur(5px); 
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--danger);
+  border-radius: 4px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.log-item strong { font-weight: 500; font-size: 1.1rem; }
+
+/* Dynamic border colors */
+.log-item[data-type="XSS"] { border-left-color: var(--warning); }
+.log-item[data-type="Broken Access Control"] { border-left-color: var(--info); }
+.log-item[data-type="SQL Injection"] { border-left-color: var(--danger); }
+.log-item[data-type="IDOR"] { border-left-color: var(--purple); } 
+
+/* --- NEW: Ban Alert Styling --- */
+@keyframes pulse {
+  0% { box-shadow: 0 0 3px rgba(255,0,0,0.7); }
+  50% { box-shadow: 0 0 12px rgba(255,0,0,1); }
+  100% { box-shadow: 0 0 3px rgba(255,0,0,0.7); }
+}
+
+.log-item[data-type="IP_BAN"] { 
+  border: 1px solid var(--ban-red); 
+  border-left: 4px solid var(--ban-red);
+  animation: pulse 1.5s infinite; /* It pulses! */
+}
+.log-item[data-type="IP_BAN"] strong { color: var(--ban-red); }
+/* ------------------------------- */
+
+.log-payload {
+  word-break: break-all;
+  background-color: rgba(0, 0, 0, 0.2); 
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.75rem;
+  color: #f0f0f0;
+}
