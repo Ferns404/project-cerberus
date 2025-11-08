@@ -12,7 +12,7 @@ The system is composed of three applications running simultaneously: the vulnera
 
 | The "Target" E-commerce Site | The "Live" SOC Dashboard |
 | :---: | :---: |
-| ![Screenshot of the CyberStore e-commerce site](YOUR_SCREENSHOT_URL_HERE) | ![Screenshot of the SOC Dashboard lighting up with alerts](YOUR_SCREENSHOT_URL_HERE) |
+| ![Screenshot of the CyberStore e-commerce site](./images/target-site.png.png) | ![Screenshot of the SOC Dashboard lighting up with alerts](./images/soc-dashboard.png.png) |
 | A full-stack (React/Node.js) e-commerce site built with intentional, critical vulnerabilities. | A live, real-time dashboard that uses WebSockets to display detected attacks *as they happen*. |
 
 ---
