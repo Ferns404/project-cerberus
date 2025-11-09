@@ -220,3 +220,10 @@ This project demonstrates 5 critical vulnerabilities and their corresponding fix
 | |   }); |
 | | } |
 | ``` | ``` |
+
+
+---
+
+## ⚖️ License
+
+Licensed under the **MIT License**.
